@@ -1,0 +1,118 @@
+[
+  {
+    "id": "amazon-pricing",
+    "title": "Data Scientist II \u2014 Pricing & Promotion Optimization (Amazon Devices)",
+    "area": "Production ML, Optimization, Forecasting",
+    "tags": [
+      "Amazon",
+      "pricing",
+      "promotions",
+      "time series",
+      "forecasting",
+      "optimization",
+      "MILP",
+      "N-BEATS"
+    ],
+    "summary": "Built large-scale pricing and promotion optimization models for Amazon Devices, combining demand forecasting and mixed-integer optimization to drive multi-million dollar savings.",
+    "details": "Developed a Mixed Integer Linear Programming (MILP) model supporting 20+ business constraints to optimize annual promotion planning for all devices, achieving around $3M cost savings in the first year. Designed and implemented N-BEATS time series models to forecast sales for new device launches, solving cold-start issues by leveraging related signals and historical launches. Owned end-to-end pipelines on AWS (EMR, S3, Lambda, etc.), making these models production-ready and monitored."
+  },
+  {
+    "id": "realtor-marketing",
+    "title": "Staff Data Scientist \u2014 Marketing Attribution (Realtor.com)",
+    "area": "Marketing attribution, experimentation, MLOps",
+    "tags": [
+      "Realtor",
+      "attribution",
+      "LSTM",
+      "A/B testing",
+      "Flask",
+      "EC2"
+    ],
+    "summary": "Led marketing attribution and experimentation tools at Realtor.com, building models and services that informed channel spend and accelerated campaign learning.",
+    "details": "Created a marketing attribution model using LSTM with ~86% AUC to measure channel-level impact. Built a real-time A/B testing impact sizing tool with Flask and EC2 that reduced time to market for campaigns by about two weeks. Set up cloud data pipelines with Lambda, Sagemaker, Glue, and EMR to automate reports and scale models for marketing stakeholders."
+  },
+  {
+    "id": "flipkart-search-reco",
+    "title": "Senior Data Scientist \u2014 Search & Recommendations (Flipkart)",
+    "area": "Recommendation systems, experimentation",
+    "tags": [
+      "Flipkart",
+      "recommendations",
+      "search",
+      "random forest",
+      "SMOTE",
+      "experimentation"
+    ],
+    "summary": "Improved onsite search and recommendation quality at Flipkart using ML models and experimentation to boost conversion and cross-sell performance.",
+    "details": "Implemented a Random Forest model with SMOTE on visit-level data to understand user conversion, improving click conversion by ~45 bps. Developed new affinity calculations for cross-selling items that drove a 14% increase in items with recommendations. Designed A/B experiments for several product launches and created an internal A/B testing tool to centralize metrics and decision-making."
+  },
+  {
+    "id": "walmart-forecasting",
+    "title": "Data Scientist \u2014 Retail Pricing & Assortment (Walmart Labs)",
+    "area": "Time series, forecasting, anomaly detection",
+    "tags": [
+      "Walmart",
+      "time series",
+      "ARIMAX",
+      "VAR",
+      "forecasting",
+      "anomaly detection"
+    ],
+    "summary": "Built time-series forecasting and anomaly detection tools at Walmart Labs to support pricing, assortment, and operational decisions across millions of SKUs.",
+    "details": "Developed ARIMAX and VAR models to forecast volume lift for ~6.5M products with about 74% forecast accuracy, supporting pricing and assortment planning. Implemented STL decomposition-based sales anomaly detection and root cause analysis. Built an end-to-end pricing pipeline on Hadoop streaming, reducing processing time from ~14 hours to 8 hours."
+  },
+  {
+    "id": "recology-routing",
+    "title": "Data Science Intern \u2014 Routing Optimization (Recology)",
+    "area": "Routing optimization, clustering, geospatial ML",
+    "tags": [
+      "Recology",
+      "routing",
+      "DBSCAN",
+      "XGBoost",
+      "geospatial"
+    ],
+    "summary": "Optimized garbage collection routes and operations at Recology using clustering, prediction, and computer vision.",
+    "details": "Automated sequencing of garbage pickup routes using geospatial data and DBSCAN clustering, reducing planning effort from two days to about 20 minutes. Predicted collection times with XGBoost and Isolation Forest, increasing route ROI by roughly 5%. Built a contract summarization tool using T5 and a garbage classification model using ResNet-50 with ~95% accuracy to classify glass/plastic/cardboard/paper/trash."
+  },
+  {
+    "id": "experiments-llm-mcp",
+    "title": "Experiment Design Agent & LLM Personalization",
+    "area": "LLMs, agents, experimentation, personalization",
+    "tags": [
+      "LLM",
+      "MCP",
+      "agents",
+      "experimentation",
+      "RAG",
+      "personalization"
+    ],
+    "summary": "Built LLM and agent-based systems for experiment design and personalization, comparing MCP-style tools with classic RAG pipelines.",
+    "details": "Designed an MCP-style agent that automated experiment design for product teams: it queried traffic data, invoked a Lambda-based power and sample-size engine, and mapped catalog data so natural language inputs (e.g., 'run an Alexa experiment') resolve to internal identifiers. Prototyped LLM-driven personalization flows with retrieval over product and behavioral data, comparing MCP vs. RAG orchestrations, and focused on guardrails for factuality, latency, and cost."
+  },
+  {
+    "id": "causal-bsts-ab",
+    "title": "Causal Inference & BSTS for A/B-like Settings",
+    "area": "Causal inference, time series, experimentation",
+    "tags": [
+      "causal inference",
+      "BSTS",
+      "A/B testing",
+      "time series"
+    ],
+    "summary": "Applied causal time-series modeling (BSTS) and experimentation methods to estimate incremental lift where classic A/B tests were underpowered or infeasible.",
+    "details": "Used Bayesian Structural Time Series to construct counterfactuals and estimate incremental impact for scenarios like accessory attach, handling seasonality and holiday effects. Combined experiment design intuition with uplift-style reasoning to interpret results clearly for product and marketing partners."
+  },
+  {
+    "id": "general-profile",
+    "title": "Overall Profile \u2014 Data Science & ML",
+    "area": "Summary",
+    "tags": [
+      "summary",
+      "profile",
+      "experience"
+    ],
+    "summary": "Data Scientist with 10+ years of experience delivering ML and analytics solutions end-to-end across e-commerce, marketing, pricing, routing, and platforms.",
+    "details": "Shruti has worked across multiple domains including e-commerce search and recommendations, retail pricing, marketing attribution, routing optimization, and device pricing at Amazon. She has hands-on experience with Python, SQL, AWS (EMR, EC2, S3, Lambda, Glue, Sagemaker), classical ML, deep learning, time-series forecasting, causal inference, and LLM-based systems. She also holds a Master's in Data Science from the University of San Francisco."
+  }
+]
