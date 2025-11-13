@@ -166,7 +166,7 @@ function synthesizeAnswer(question, hits){
     const d = h.doc;
     return `<li><strong>${d.title}</strong> — ${d.summary}</li>`;
   }).join("");
-  let closing = "If you’d like more detail, you can ask follow‑ups like “tell me more about that project” or “what were the business results?”.";
+  let closing = "What else would you like to know about my experience?";
   return `${intro}<ul>${bullets}</ul>${closing}`;
 }
 
@@ -178,11 +178,10 @@ window.addEventListener("load", () => {
     .then(kb => {
       KB = kb;
       buildIndex(KB);
-      addMessage("system", "Loaded Shruti’s experience. Ask about LLMs, causal inference, experimentation, pricing, recommendations, routing, or general profile.", "system");
     })
     .catch(err => {
       console.error("Failed to load kb.json", err);
-      addMessage("system", "I couldn’t load my knowledge base. The chatbot might not answer accurately until this is fixed.", "system");
+      addMessage("system", "Uh-oh I am facing technical difficulties. Please download my resume instead! ", "system");
     });
 
   // Greeting + intro with typewriter + fade
