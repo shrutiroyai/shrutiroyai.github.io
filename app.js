@@ -10,6 +10,16 @@ let ready = false;
 let fallbackIndex = null;
 let useModel = null;
 let kbEmbeddings = [];
+
+const SYNONYMS = {
+  llm: ["llm", "language", "gpt", "foundation", "large", "rag", "agent", "mcp"],
+  causal: ["causal", "uplift", "counterfactual", "bsts", "experiment", "ab", "a/b", "experimentation"],
+  production: ["production", "prod", "deploy", "deployed", "deployment", "pipeline", "mle", "mlops", "shipping", "shipped"],
+  recommendation: ["reco", "recommendation", "personalization", "ranking"],
+  pricing: ["pricing", "promotion", "discount", "price"],
+  marketing: ["marketing", "channel", "campaign", "crm"],
+  routing: ["route", "routing", "logistics", "path", "shuttle"],
+};
 const EXCLUDE_IDS = new Set();
 
 // -------- UI helpers --------
@@ -32,8 +42,32 @@ function appendMessage(node, sender = "bot") {
   bubble.appendChild(node);
   wrapper.appendChild(bubble);
   messagesEl.appendChild(wrapper);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+  // Smoothly keep the newest message in view
+  requestAnimationFrame(() => {
+    wrapper.scrollIntoView({ behavior: "smooth", block: "end" });
+  });
   return wrapper;
+}
+
+function typewriter(text, element, speed = 28, done) {
+  let i = 0;
+  function step() {
+    if (i < text.length) {
+      element.innerHTML = text.substring(0, i + 1) + "<span class='cursor'>|</span>";
+      i++;
+      setTimeout(step, speed);
+    } else {
+      element.innerHTML = text;
+      if (done) done();
+    }
+  }
+  step();
+}
+
+function fadeReveal(text) {
+  const div = addBotMessage(text);
+  div.classList.add("fade-reveal");
+  return div;
 }
 
 function addBotMessage(text) {
@@ -77,10 +111,22 @@ function normalizeText(s = "") {
 }
 
 function tokenize(text) {
-  return normalizeText(text)
+  const base = normalizeText(text)
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter((w) => w && w.length > 1 && !STOP.has(w));
+  return expandTokens(base);
+}
+
+function expandTokens(tokens) {
+  const expanded = [];
+  tokens.forEach((t) => {
+    expanded.push(t);
+    Object.entries(SYNONYMS).forEach(([key, vals]) => {
+      if (vals.includes(t)) expanded.push(key);
+    });
+  });
+  return expanded;
 }
 
 function keywordBonus(item, qTokens) {
@@ -93,6 +139,15 @@ function keywordBonus(item, qTokens) {
     if (docSet.has(t)) bonus += 0.12;
   });
   return bonus;
+}
+
+function priorityBonus(item) {
+  const company = (item.company || "").toLowerCase();
+  if (company.includes("amazon")) return 0.02;
+  if (company.includes("realtor")) return 0.015;
+  if (company.includes("recology")) return 0.01;
+  if (company.includes("flipkart")) return 0.008;
+  return 0;
 }
 
 function isGreeting(text = "") {
@@ -189,7 +244,7 @@ function searchWithFallback(query, topK = 3) {
   const qTokens = tokenize(query);
   const scored = fallbackIndex.docs
     .map((d) => {
-      let score = cosineSimilarity(qv, d.vec) + keywordBonus(d.item, qTokens);
+      let score = cosineSimilarity(qv, d.vec) + keywordBonus(d.item, qTokens) + priorityBonus(d.item);
       return { item: d.item, score };
     });
   scored.sort((a, b) => b.score - a.score);
@@ -211,7 +266,7 @@ async function searchWithModel(query, topK = 3) {
   tensor.dispose();
   const qTokens = tokenize(query);
   const scored = kbEmbeddings.map((entry) => {
-    let score = cosineSimilarity(qv, entry.embedding) + keywordBonus(entry.item, qTokens);
+    let score = cosineSimilarity(qv, entry.embedding) + keywordBonus(entry.item, qTokens) + priorityBonus(entry.item);
     return { item: entry.item, score };
   });
   scored.sort((a, b) => b.score - a.score);
@@ -342,8 +397,15 @@ async function init() {
   fallbackIndex = buildFallbackIndex(kb);
   ready = true;
   setInputDisabled(false);
-  addBotMessage("Hi, I'm Shruti 👋");
-  addBotMessage("Ask about ML systems, personalization, causal inference, or experimentation. I'll surface the closest projects with full details.");
+  const intro1 = appendMessage(document.createElement("div"), "bot");
+  typewriter("Hi, I am Shruti 👋", intro1.querySelector(".bubble"), 40, () => {
+    const msg2 = appendMessage(document.createElement("div"), "bot");
+    typewriter("I love turning data and algorithms into real business impact.", msg2.querySelector(".bubble"), 22, () => {
+      fadeReveal(
+        "With 10+ years of experience deploying ML systems and a Master’s in Data Science from USF, I’ve worked across experimentation, personalization, and production ML. Outside work, I enjoy cooking, reading, and travelling."
+      );
+    });
+  });
   setStatus("Loading model…");
 
   // Fire-and-forget model load; fallback search stays available.
