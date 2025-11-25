@@ -43,7 +43,7 @@ function fadeReveal(text) {
 
 // Basic tokenizer
 const STOP = new Set("a,an,the,and,or,of,in,on,for,to,with,without,by,at,from,as,that,this,is,are,was,were,be,been,has,have,had,do,does,did,not,if,but,then,so,than,it,its,into,over,per,via,about,your,my,our,their,them,they,you,we,i".split(","));
-const SIMILARITY_THRESHOLD = 0.3;
+const SIMILARITY_THRESHOLD = 0.15;
 
 function tokens(s){
   return (s || "")
@@ -57,7 +57,7 @@ function tokens(s){
 const SYNONYMS = {
   "llm": ["llm","language","gpt","foundation","large","rag","agent","mcp"],
   "causal": ["causal","uplift","counterfactual","bsts","experiment","ab","a/b","experiment","experimentation"],
-  "production": ["production","prod","deploy","deployment","pipeline","mle","mlops"],
+  "production": ["production","prod","deploy","deployed","deployment","pipeline","mle","mlops","shipping","shipped"],
   "recommendation": ["reco","recommendation","personalization","ranking"],
   "pricing": ["pricing","promotion","discount","price"],
   "marketing": ["marketing","channel","campaign","crm"],
