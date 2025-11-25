@@ -67,9 +67,16 @@ const STOP = new Set(
   )
 );
 
-function tokenize(text) {
-  return (text || "")
+function normalizeText(s = "") {
+  return s
     .toLowerCase()
+    .replace(/\bllms\b/g, "llm")
+    .replace(/\bagents\b/g, "agent")
+    .replace(/\brags\b/g, "rag");
+}
+
+function tokenize(text) {
+  return normalizeText(text)
     .replace(/[^a-z0-9\s]/g, " ")
     .split(/\s+/)
     .filter((w) => w && w.length > 1 && !STOP.has(w));
@@ -166,11 +173,12 @@ function searchWithFallback(query, topK = 3) {
 }
 
 async function buildEmbeddingsWithModel(model, docs) {
-  const texts = docs.map(
-    (item) =>
-      `${item.title || ""} ${item.area || ""} ${(item.tags || []).join(" ")} ${
+  const texts = docs.map((item) =>
+    normalizeText(
+      `${item.title || ""} ${item.area || ""} ${(item.tags || []).join(" ")} ${(item.tags || []).join(" ")} ${
         item.summary || ""
       } ${item.details || ""}`
+    )
   );
   const tensor = await model.embed(texts);
   const arr = tensor.arraySync();
@@ -179,7 +187,8 @@ async function buildEmbeddingsWithModel(model, docs) {
 }
 
 async function searchWithModel(query, topK = 3) {
-  const tensor = await useModel.embed([query]);
+  const q = normalizeText(query);
+  const tensor = await useModel.embed([q]);
   const qv = tensor.arraySync()[0];
   tensor.dispose();
   const scored = kbEmbeddings.map((entry) => ({
@@ -266,7 +275,7 @@ async function handleUserQuery(event) {
   const thinking = addThinking();
   let results = [];
   try {
-    results = await search(query, 3);
+    results = await search(query, 1);
   } catch (err) {
     console.error("Search failed", err);
   } finally {
