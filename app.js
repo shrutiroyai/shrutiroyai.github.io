@@ -43,6 +43,7 @@ function fadeReveal(text) {
 
 // Basic tokenizer
 const STOP = new Set("a,an,the,and,or,of,in,on,for,to,with,without,by,at,from,as,that,this,is,are,was,were,be,been,has,have,had,do,does,did,not,if,but,then,so,than,it,its,into,over,per,via,about,your,my,our,their,them,they,you,we,i".split(","));
+const SIMILARITY_THRESHOLD = 0.3;
 
 function tokens(s){
   return (s || "")
@@ -147,19 +148,20 @@ function cosine(a,b){
   return s;
 }
 
-function retrieveSemantic(query, k=3){
+function retrieveSemantic(query, k=3, minScore=0){
   if(!KB_INDEX) return [];
   const qv = embedQuery(query);
   if(!qv) return [];
   const scored = KB_INDEX.docs.map(d=>({score: cosine(qv, d.vec), doc:d}));
   scored.sort((a,b)=> b.score - a.score);
-  return scored.slice(0,k);
+  const filtered = scored.filter(s => s.score >= minScore);
+  return filtered.slice(0,k);
 }
 
 // -------- Answer synthesis --------
 function synthesizeAnswer(question, hits){
   if(!hits || hits.length === 0){
-    return "I couldn’t quite match that to anything in my experience yet. You can try rephrasing, or ask about areas like pricing, experimentation, LLMs, causal inference, or recommendations.";
+    return "Sorry there is no matching experience, but I am always up for learning.";
   }
   let intro = `Here’s the experience most relevant to “<strong>${question}</strong>”:`;
   let bullets = hits.map(h=>{
@@ -205,7 +207,7 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 
   // Retrieve relevant experience
-  const hits = retrieveSemantic(text, 3);
+  const hits = retrieveSemantic(text, 3, SIMILARITY_THRESHOLD);
   const ansHtml = synthesizeAnswer(text, hits);
   addMessage("bot", ansHtml);
 });

@@ -101,21 +101,8 @@
   ],
   "summary": "Applied an S-Learner causal ML framework to estimate incremental lift for Amazon product changes in situations where classic A/B tests were underpowered or infeasible.",
   "details": "Trained an XGBoost S-Learner with treatment indicators to generate counterfactual predictions and quantify incremental impact for scenarios such as accessory attach, while adjusting for seasonality and holiday patterns. Combined experiment design intuition with uplift-style reasoning to deliver clear, actionable insights to product and marketing partners."
-},
-
-  {
-    "id": "general-profile",
-    "title": "Overall Profile \u2014 Data Science & ML",
-    "area": "Summary",
-    "tags": [
-      "summary",
-      "profile",
-      "experience"
-    ],
-    "summary": "Data Scientist with 10+ years of experience delivering ML and analytics solutions end-to-end across e-commerce, marketing, pricing, routing, and platforms.",
-    "details": "Shruti has worked across multiple domains including e-commerce search and recommendations, retail pricing, marketing attribution, routing optimization, and device pricing at Amazon. She has hands-on experience with Python, SQL, AWS (EMR, EC2, S3, Lambda, Glue, Sagemaker), classical ML, deep learning, time-series forecasting, causal inference, and LLM-based systems. She also holds a Master's in Data Science from the University of San Francisco."
-  },
-  {
+}
+,  {
     "id": "resume",
     "title": "Resume — Shruti Roy",
     "area": "Full resume data",
