@@ -10,6 +10,7 @@ let ready = false;
 let fallbackIndex = null;
 let useModel = null;
 let kbEmbeddings = [];
+const EXCLUDE_IDS = new Set();
 
 // -------- UI helpers --------
 function setStatus(text, variant) {
@@ -82,10 +83,31 @@ function tokenize(text) {
     .filter((w) => w && w.length > 1 && !STOP.has(w));
 }
 
+function keywordBonus(item, qTokens) {
+  const text = normalizeText(
+    `${item.title || ""} ${(item.tags || []).join(" ")} ${(item.tags || []).join(" ")} ${item.summary || ""} ${item.details || ""}`
+  );
+  const docSet = new Set(text.split(/\s+/).filter(Boolean));
+  let bonus = 0;
+  qTokens.forEach((t) => {
+    if (docSet.has(t)) bonus += 0.12;
+  });
+  return bonus;
+}
+
+function isGreeting(text = "") {
+  const t = normalizeText(text).replace(/[^a-z\s]/g, " ").trim();
+  if (!t) return false;
+  const simple = new Set(["hi", "hey", "hello", "yo", "hola"]);
+  if (simple.has(t)) return true;
+  if (t === "hi there" || t === "hello there") return true;
+  return false;
+}
+
 function buildFallbackIndex(docs) {
   const vocab = new Map();
   const tokensPerDoc = docs.map((d) => {
-    const text = `${d.title || ""} ${d.area || ""} ${(d.tags || []).join(" ")} ${
+    const text = `${d.title || ""} ${d.area || ""} ${(d.tags || []).join(" ")} ${(d.tags || []).join(" ")} ${
       d.summary || ""
     } ${d.details || ""}`;
     const toks = tokenize(text);
@@ -164,22 +186,18 @@ function searchWithFallback(query, topK = 3) {
   if (!fallbackIndex) return [];
   const qv = embedFallbackQuery(query);
   if (!qv) return [];
-  const scored = fallbackIndex.docs.map((d) => ({
-    item: d.item,
-    score: cosineSimilarity(qv, d.vec),
-  }));
+  const qTokens = tokenize(query);
+  const scored = fallbackIndex.docs
+    .map((d) => {
+      let score = cosineSimilarity(qv, d.vec) + keywordBonus(d.item, qTokens);
+      return { item: d.item, score };
+    });
   scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, topK).map((s) => s.item);
+  return scored.slice(0, topK).map((s) => ({ ...s.item, _score: s.score }));
 }
 
 async function buildEmbeddingsWithModel(model, docs) {
-  const texts = docs.map((item) =>
-    normalizeText(
-      `${item.title || ""} ${item.area || ""} ${(item.tags || []).join(" ")} ${(item.tags || []).join(" ")} ${
-        item.summary || ""
-      } ${item.details || ""}`
-    )
-  );
+  const texts = docs.map((item) => normalizeText(`${(item.tags || []).join(" ")} ${item.summary || ""}`));
   const tensor = await model.embed(texts);
   const arr = tensor.arraySync();
   tensor.dispose();
@@ -191,23 +209,31 @@ async function searchWithModel(query, topK = 3) {
   const tensor = await useModel.embed([q]);
   const qv = tensor.arraySync()[0];
   tensor.dispose();
-  const scored = kbEmbeddings.map((entry) => ({
-    item: entry.item,
-    score: cosineSimilarity(qv, entry.embedding),
-  }));
+  const qTokens = tokenize(query);
+  const scored = kbEmbeddings.map((entry) => {
+    let score = cosineSimilarity(qv, entry.embedding) + keywordBonus(entry.item, qTokens);
+    return { item: entry.item, score };
+  });
   scored.sort((a, b) => b.score - a.score);
-  return scored.slice(0, topK).map((s) => s.item);
+  return scored.slice(0, topK).map((s) => ({ ...s.item, _score: s.score }));
 }
 
 async function search(query, topK = 3) {
+  // Primary: TF-IDF
+  const tfidfResults = searchWithFallback(query, 3);
+  const filteredTfidf = tfidfResults.filter((r) => (r._score || 0) >= 0.05);
+  if (filteredTfidf.length) return filteredTfidf;
+
+  // Fallback: USE embeddings (tags+summary only)
   if (useModel && kbEmbeddings.length) {
     try {
-      return await searchWithModel(query, topK);
+      const useResults = (await searchWithModel(query, topK)).filter((r) => (r._score || 0) >= 0.05);
+      return useResults;
     } catch (err) {
       console.warn("Model search failed, falling back", err);
     }
   }
-  return searchWithFallback(query, topK);
+  return [];
 }
 
 // -------- Render results --------
@@ -266,6 +292,13 @@ async function handleUserQuery(event) {
 
   addUserMessage(query);
   inputEl.value = "";
+
+  if (isGreeting(query)) {
+    addBotMessage(
+      "Hi! I’m Shruti’s client-side retrieval bot. I run locally in your browser with TensorFlow.js + a keyword booster—ask me about her work and I’ll pull the closest experience."
+    );
+    return;
+  }
 
   if (!ready) {
     addSystemMessage("Still loading the knowledge base. One sec...");

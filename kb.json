@@ -14,6 +14,7 @@
       "AWS EMR",
       "AWS SQS",
       "MLOps",
+      "production",
       "API integration"
     ],
     "summary": "Increased homepage campaign CTR by 18% across 200M weekly customers by owning the LightGBM ranking model end-to-end and architecting a scalable Lambda+EMR+SQS scoring pipeline integrated with internal APIs.",
