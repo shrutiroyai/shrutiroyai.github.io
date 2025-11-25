@@ -90,19 +90,19 @@
     "summary": "Built LLM and agent-based systems for experiment design and personalization, comparing MCP-style tools with classic RAG pipelines.",
     "details": "Designed an MCP-style agent that automated experiment design for product teams: it queried traffic data, invoked a Lambda-based power and sample-size engine, and mapped catalog data so natural language inputs (e.g., 'run an Alexa experiment') resolve to internal identifiers. Prototyped LLM-driven personalization flows with retrieval over product and behavioral data, comparing MCP vs. RAG orchestrations, and focused on guardrails for factuality, latency, and cost."
   },
-  {
-    "id": "causal-bsts-ab",
-    "title": "Causal Inference & BSTS for A/B-like Settings",
-    "area": "Causal inference, time series, experimentation",
-    "tags": [
-      "causal inference",
-      "BSTS",
-      "A/B testing",
-      "time series"
-    ],
-    "summary": "Applied causal time-series modeling (BSTS) and experimentation methods to estimate incremental lift where classic A/B tests were underpowered or infeasible.",
-    "details": "Used Bayesian Structural Time Series to construct counterfactuals and estimate incremental impact for scenarios like accessory attach, handling seasonality and holiday effects. Combined experiment design intuition with uplift-style reasoning to interpret results clearly for product and marketing partners."
-  },
+{
+  "id": "causal-ab-inference",
+  "title": "Causal Inference for A/B-like Settings",
+  "area": "Causal inference, experimentation",
+  "tags": [
+    "causal inference",
+    "A/B testing",
+    "experimentation"
+  ],
+  "summary": "Applied an S-Learner causal ML framework to estimate incremental lift for Amazon product changes in situations where classic A/B tests were underpowered or infeasible.",
+  "details": "Trained an XGBoost S-Learner with treatment indicators to generate counterfactual predictions and quantify incremental impact for scenarios such as accessory attach, while adjusting for seasonality and holiday patterns. Combined experiment design intuition with uplift-style reasoning to deliver clear, actionable insights to product and marketing partners."
+},
+
   {
     "id": "general-profile",
     "title": "Overall Profile \u2014 Data Science & ML",
@@ -255,7 +255,7 @@
   {
     "id": "proj-two-tower",
     "title": "Two-Tower Recommender System",
-    "area": "Personal Projects",
+    "area": "Personal Project",
     "tags": [
       "retrieval",
       "recommendations",
@@ -269,7 +269,7 @@
   {
     "id": "proj-twiml-buzzer",
     "title": "Automated Entry Buzzer with TwiML",
-    "area": "Personal Projects",
+    "area": "Personal Project",
     "tags": [
       "Twilio",
       "TwiML",
@@ -284,7 +284,7 @@
   {
     "id": "proj-marketing-mix",
     "title": "Marketing Mix Modeling & Adstock",
-    "area": "Personal Projects",
+    "area": "Personal Project",
     "tags": [
       "marketing mix modeling",
       "adstock",
@@ -298,7 +298,7 @@
   {
     "id": "proj-client-rag",
     "title": "Client-Side RAG on Resume (FastAPI + HF Transformers)",
-    "area": "Personal Projects",
+    "area": "Personal Project",
     "tags": [
       "RAG",
       "client-side",
