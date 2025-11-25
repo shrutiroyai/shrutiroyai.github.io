@@ -43,7 +43,6 @@ function fadeReveal(text) {
 
 // Basic tokenizer
 const STOP = new Set("a,an,the,and,or,of,in,on,for,to,with,without,by,at,from,as,that,this,is,are,was,were,be,been,has,have,had,do,does,did,not,if,but,then,so,than,it,its,into,over,per,via,about,your,my,our,their,them,they,you,we,i".split(","));
-const SIMILARITY_THRESHOLD = 0.15;
 
 function tokens(s){
   return (s || "")
@@ -148,14 +147,13 @@ function cosine(a,b){
   return s;
 }
 
-function retrieveSemantic(query, k=3, minScore=0){
+function retrieveSemantic(query, k=3){
   if(!KB_INDEX) return [];
   const qv = embedQuery(query);
   if(!qv) return [];
   const scored = KB_INDEX.docs.map(d=>({score: cosine(qv, d.vec), doc:d}));
   scored.sort((a,b)=> b.score - a.score);
-  const filtered = scored.filter(s => s.score >= minScore);
-  return filtered.slice(0,k);
+  return scored.slice(0,k);
 }
 
 // -------- Answer synthesis --------
@@ -207,7 +205,7 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 
   // Retrieve relevant experience
-  const hits = retrieveSemantic(text, 3, SIMILARITY_THRESHOLD);
+  const hits = retrieveSemantic(text, 3);
   const ansHtml = synthesizeAnswer(text, hits);
   addMessage("bot", ansHtml);
 });
