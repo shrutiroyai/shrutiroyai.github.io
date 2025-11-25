@@ -20,6 +20,22 @@
     "summary": "Increased homepage campaign CTR by 18% across 200M weekly customers by owning the LightGBM ranking model end-to-end and architecting a scalable Lambda+EMR+SQS scoring pipeline integrated with internal APIs.",
     "details": "At Amazon Devices, I led the design and deployment of a LightGBM-based ranking model that personalized homepage campaign placements for over 200M weekly customers. I built a production scoring pipeline where AWS Lambda orchestrated scoring jobs, EMR handled distributed inference over large customer cohorts, and SQS buffered results to downstream services. The pipeline integrated with internal APIs to fetch real-time behavioral and catalog features and to write scores back into serving systems. I implemented feature engineering, offline evaluation, and A/B testing to validate performance gains before full rollout. I also set up monitoring for latency, throughput, and model health to ensure reliability at scale. This system directly enabled an 18% uplift in homepage campaign CTR and became the core personalization engine for Devices marketing surfaces."
   },
+{
+  "id": "amazon-metalearners",
+  "title": "S-Learner for Incrementality Measurement",
+  "company": "Amazon",
+  "area": "Causal Modeling & Experimentation",
+  "tags": [
+    "A/B testing",
+    "experimentation",
+    "causal inference",
+    "S-Learner",
+    "Bayesian modeling"
+  ],
+  "summary": "Estimated the incremental lift of a browse-page change that could not be A/B tested, using an S-Learner meta-modeling approach to quantify true causal impact.",
+  "details": "Identified a high-visibility browse-page change where a classic A/B test was infeasible due to operational constraints. Designed an S-Learner framework using a single XGboost model to predict outcomes under treatment and control for all users, enabling counterfactual estimation at scale. Built a feature set capturing customer behavior, device engagement, seasonality, and historical trends, and applied propensity-based adjustments to reduce bias. Validated estimates through backtesting on prior experiments and Bayesian uncertainty intervals to ensure statistical confidence. The analysis revealed a measurable positive lift, providing evidence to move forward with launch and informing targeting recommendations for future rollouts. The framework became a reusable template for incrementality measurement in low-testability scenarios."
+}
+,
   {
     "id": "amazon-experiment-agent-setup",
     "title": "Experimentation & A/B Testing — Amazon",
