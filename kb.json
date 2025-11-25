@@ -36,12 +36,12 @@
     "title": "Senior Data Scientist \u2014 Search & Recommendations (Flipkart)",
     "area": "Recommendation systems, experimentation",
     "tags": [
-      "Flipkart",
       "recommendations",
       "search",
       "random forest",
       "SMOTE",
-      "experimentation"
+      "experimentation",
+      "A/B testing"
     ],
     "summary": "Improved onsite search and recommendation quality at Flipkart using ML models and experimentation to boost conversion and cross-sell performance.",
     "details": "Implemented a Random Forest model with SMOTE on visit-level data to understand user conversion, improving click conversion by ~45 bps. Developed new affinity calculations for cross-selling items that drove a 14% increase in items with recommendations. Designed A/B experiments for several product launches and created an internal A/B testing tool to centralize metrics and decision-making."
@@ -114,5 +114,200 @@
     ],
     "summary": "Data Scientist with 10+ years of experience delivering ML and analytics solutions end-to-end across e-commerce, marketing, pricing, routing, and platforms.",
     "details": "Shruti has worked across multiple domains including e-commerce search and recommendations, retail pricing, marketing attribution, routing optimization, and device pricing at Amazon. She has hands-on experience with Python, SQL, AWS (EMR, EC2, S3, Lambda, Glue, Sagemaker), classical ML, deep learning, time-series forecasting, causal inference, and LLM-based systems. She also holds a Master's in Data Science from the University of San Francisco."
+  },
+  {
+    "id": "resume",
+    "title": "Resume — Shruti Roy",
+    "area": "Full resume data",
+    "tags": [
+      "resume",
+      "profile",
+      "experience",
+      "education",
+      "skills"
+    ],
+    "summary": "Structured resume JSON for Shruti Roy with summary, experience, education, and skills sections.",
+    "details": {
+      "data": {
+        "name": "Shruti Roy",
+        "headline": "Senior Data Scientist",
+        "email": "shrutid203@gmail.com",
+        "phone": "(425)-628-3203",
+        "location": "Seattle, WA",
+        "linkedin": "linkedin.com/in/shruti-roy/",
+        "summary": "Senior Data Scientist specializing in large-scale ML systems (200M+ customers), causal inference, and end-to-end model deployment on AWS. Experienced in building ranking models, LLM/agent systems, A/B testing automation, and time-series forecasting for high-stakes product decisions.",
+        "openaiKey": "",
+        "skills": [
+          "AWS",
+          "Pytorch",
+          "FastAPI",
+          "A/B Testing",
+          "Scikit-Learn",
+          "EMR",
+          "SQL",
+          "Flask",
+          "Ollama",
+          "FASAI",
+          "Spark",
+          "Hadoop",
+          "Tableau"
+        ],
+        "experience": [
+          {
+            "bullets": [
+              "Increased homepage campaign CTR by 18% across 200M weekly customers by owning the LightGBM ranking model end-to-end and architecting a scalable Lambda+EMR+SQS scoring pipeline integrated with internal APIs.",
+              "Reduced A/B experiment setup time by 85% (days to ~10 minutes) for 30+ PMs by developing an MCP-based experiment-design agent automating statistical calculations, guardrail checks, and results interpretation.",
+              "Improved anomaly detection precision by 22% across 100+ devices by engineering an uncertainty-aware sales deviation monitoring system using Nixtla to distinguish true demand drops from seasonal or pricing effects.",
+              "Reduced launch forecast error by 15% for new devices by developing an N-BEATS forecasting pipeline that mitigated cold-start issues and improved inventory and supply chain planning accuracy."
+            ],
+            "role": "Senior Data Scientist",
+            "company": "Amazon",
+            "location": "Seattle, USA",
+            "start": "June 2022",
+            "end": "Present"
+          },
+          {
+            "bullets": [
+              "Drove a 13% lift in ROI by enabling optimized channel spend allocation using an LSTM-based attribution model (PR AUC: 76.3%), deployed through serverless pipelines (Lambda, SageMaker, EMR) for consistent and scalable inference.",
+              "Drove a 7.8% lift in rental lead conversion by building a natural-language cohort engine using behavioral embeddings and OpenSearch vector search to retrieve semantically similar customers from NL-defined seed behaviors.",
+              "Reduced manual reporting effort by ~35% by building production ETL pipelines using AWS Glue, EMR, and automated dashboards, standardizing analytics workflows for marketing stakeholders."
+            ],
+            "role": "Staff Data Scientist (Marketing Data Science)",
+            "company": "Realtor.com",
+            "location": "Seattle, USA",
+            "start": "Sept. 2021",
+            "end": "June 2022"
+          },
+          {
+            "bullets": [
+              "Improved route ROI by 8% using XGBoost and Isolation Forest models to forecast pickup times and anticipate operational delays.",
+              "Accelerated contract review cycles by 30% through a T5-based summarization model extracting key legal clauses from long-form service agreements.",
+              "Developed a ResNet-50 waste-classification model achieving 95% accuracy across five material categories, enabling future automation of recycling workflows."
+            ],
+            "role": "Data Science Intern (Routing Optimization)",
+            "company": "Recology",
+            "location": "San Francisco, USA",
+            "start": "Jan. 2021",
+            "end": "Aug. 2021"
+          },
+          {
+            "role": "Senior Data Scientist (Search and Recommendation)",
+            "company": "Flipkart E-commerce",
+            "location": "Bangalore, India",
+            "start": "Aug. 2018",
+            "end": "July 2020",
+            "bullets": [
+              "Increased recommendation coverage by 14% and improved units sold by 10% by leading two DSs in building collaborative filtering models for private-label products.",
+              "Improved launch success metrics by driving experiment design and analysis for five major initiatives and developing an internal A/B experimentation tool that reduced setup time by 30%.",
+              "Reduced anomaly investigation time by 25% by deploying STL-based decomposition models to isolate demand shocks and seasonal patterns across categories."
+            ]
+          },
+          {
+            "role": "Data Scientist (Retail Pricing and Assortment analytics)",
+            "company": "Walmart Labs",
+            "location": "Bangalore, India",
+            "start": "Nov. 2016",
+            "end": "Aug. 2018",
+            "bullets": [
+              "Forecasted volume lift for 6.5M+ products using ARIMAX and VAR models (74% accuracy), enabling pricing and assortment teams to improve planning accuracy by ~12%.",
+              "Accelerated executive decision-making by developing Tableau dashboards to visualize anomalies, forecasts, and root-cause analyses across high-volume product categories."
+            ]
+          },
+          {
+            "role": "Earlier Career",
+            "company": "",
+            "location": "",
+            "start": "",
+            "end": "",
+            "bullets": [
+              "Lead Product Analyst, Ola Cabs (2016) — Increased shuttle-route utilization by 14% by optimizing route structures using linear programming under real-world demand and capacity constraints.",
+              "Business Analyst, ZS Associates (2014–2016) — Built a statistical governance model using linear regression to ensure equitable incentive payouts and reduce compensation disputes by ~10%."
+            ]
+          }
+        ],
+        "education": [
+          {
+            "degree": "Masters in Data Science",
+            "school": "University of San Francisco",
+            "location": "3.8/4 GPA",
+            "start": "Aug. 2020",
+            "end": "Aug. 2021",
+            "details": ""
+          },
+          {
+            "degree": "B.E(Hons.) Electronics",
+            "school": "Birla Institute of Technology and Science",
+            "location": "",
+            "start": "Aug. 2010",
+            "end": "May 2014",
+            "details": ""
+          }
+        ]
+      },
+      "sectionOrder": [
+        "summary",
+        "experience",
+        "education",
+        "skills"
+      ]
+    }
+  },
+  {
+    "id": "proj-two-tower",
+    "title": "Two-Tower Recommender System",
+    "area": "Personal Projects",
+    "tags": [
+      "retrieval",
+      "recommendations",
+      "two-tower",
+      "similarity search",
+      "Pytorch"
+    ],
+    "summary": "Two-tower retrieval model that learns user and item embeddings separately and ranks candidates via dot-product similarity.",
+    "details": "GitHub: https://github.com/shrutiroyai/two_tower_retrieval. Trained a two-tower architecture to generate user and item vectors for fast candidate generation. Implemented negative sampling, batch inference, and ANN-ready embeddings so the model can plug into downstream ranking or vector-search layers."
+  },
+  {
+    "id": "proj-twiml-buzzer",
+    "title": "Automated Entry Buzzer with TwiML",
+    "area": "Personal Projects",
+    "tags": [
+      "Twilio",
+      "TwiML",
+      "voice",
+      "automation",
+      "PHP",
+      "AWS"
+    ],
+    "summary": "Automated apartment entry calls with a Twilio-powered voice flow that validates a passcode and triggers the buzzer.",
+    "details": "GitHub: https://github.com/shrutiroyai/Programing-Voice-using-TwiML. Set up a Twilio number that answers the building entry phone, checks a shared passcode, and automatically buzzes visitors in. Hosted the PHP webhook on AWS with configurable codes to avoid missed early-morning calls."
+  },
+  {
+    "id": "proj-marketing-mix",
+    "title": "Marketing Mix Modeling & Adstock",
+    "area": "Personal Projects",
+    "tags": [
+      "marketing mix modeling",
+      "adstock",
+      "attribution",
+      "time series",
+      "Python"
+    ],
+    "summary": "Built weekly MMMs with adstock rate estimation for camera accessories, home audio, and gaming accessories.",
+    "details": "GitHub: https://github.com/shrutiroyai/Adstock-Rate-Calculation-and-Marketing-Mix-Modelling. Modeled channel contributions using adstock transformations, saturation, and base vs. incremental demand separation at weekly granularity to guide spend allocation across three product sub-categories."
+  },
+  {
+    "id": "proj-client-rag",
+    "title": "Client-Side RAG on Resume (FastAPI + HF Transformers)",
+    "area": "Personal Projects",
+    "tags": [
+      "RAG",
+      "client-side",
+      "FastAPI",
+      "transformers",
+      "Hugging Face",
+      "resume"
+    ],
+    "summary": "Browser-first RAG that uses Hugging Face transformers and a FastAPI backend to answer questions over my resume.",
+    "details": "GitHub: https://github.com/shrutiroyai/shrutiroyai.github.io. Built a lightweight client-side RAG that embeds resume snippets with HF transformers, serves them via FastAPI, and answers queries without a heavyweight LLM—optimized for low-latency lookups and privacy-friendly browsing."
   }
 ]

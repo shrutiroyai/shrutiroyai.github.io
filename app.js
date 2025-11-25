@@ -186,11 +186,11 @@ window.addEventListener("load", () => {
 
   // Greeting + intro with typewriter + fade
   let msg1 = addMessage("bot", "");
-  typewriter("Hi, I am Shruti 👋", msg1.querySelector(".bubble"), 40, () => {
-    let first = "I love turning data and algorithms into real business impact.";
+  typewriter("Hey there! I'm Shruti's client-side RAG concierge 🤖", msg1.querySelector(".bubble"), 40, () => {
+    let first = "Powered by Hugging Face transformers + FastAPI, I live in your browser doing speedy resume lookups.";
     let msg2 = addMessage("bot", "");
     typewriter(first, msg2.querySelector(".bubble"), 22, () => {
-      let more = " With 10+ years of experience deploying ML systems and a Master’s in Data Science from USF, I’ve worked across experimentation, personalization, and production ML. Outside work, I enjoy cooking, reading, and travelling.";
+      let more = " I'm not a full-fledged LLM—more like the caffeinated usher who walks you to the right projects before the bigger models wake up.";
       fadeReveal(more);
     });
   });
