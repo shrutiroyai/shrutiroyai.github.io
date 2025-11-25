@@ -1,36 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shruti Roy — Interactive Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shruti Experience Chat</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Tensorflow + USE -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.20.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
 </head>
 <body>
-  <div class="background"></div>
-
-  <div class="hero-wrapper">
-    <div class="left-side">
-      <div class="photo-card">
-        <img src="profile.png" alt="Shruti Roy">
-      </div>
+  <div class="container">
+    <h1>Ask about Shruti's Experience</h1>
+    <div id="chat-window">
+      <div id="messages"></div>
     </div>
-
-    <div class="right-side">
-      <h1 class="hero-title">Hi, I'm <span class="accent">Shruti Roy</span></h1>
-      <p class="subtitle">ML · Causal Inference · Personalization · Data Scientist</p>
-
-      <section id="chat-section">
-        <div id="messages"></div>
-        <form id="chat-form">
-          <input id="user-input" type="text" placeholder="Ask me anything…" autocomplete="off" required>
-          <button type="submit">Send</button>
-        </form>
-        <p class="hint">Try: “What did she build with LLMs?”, “How strong is her causal inference background?”, or “Has she deployed ML models to production?”</p>
-      </section>
+    <div class="input-area">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Ask something like: Does she have A/B testing experience?"
+      />
+      <button id="send-btn">Send</button>
     </div>
   </div>
 
-  <script type="module" src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
