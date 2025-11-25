@@ -1,99 +1,328 @@
-let useModel;
+const messagesEl = document.getElementById("messages");
+const inputEl = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
+const statusPill = document.getElementById("status-pill");
+const chips = document.querySelectorAll(".prompt-chip");
+const form = document.getElementById("chat-form");
+
 let kb = [];
 let kbEmbeddings = [];
+let useModel = null;
+let ready = false;
+let fallbackIndex = null;
 
-// ✅ Load KB + Model + Build Embeddings
-async function init() {
-  addMessage("🤖 Loading knowledge base and brain...", "bot");
-  kb = await fetch("kb.json").then((res) => res.json());
-
-  useModel = await use.load();
-  addMessage("✅ Brain loaded. Indexing experience...", "bot");
-
-  for (const item of kb) {
-    const text = `${item.title} ${item.area} ${item.tags.join(" ")} ${item.summary} ${item.details}`;
-    const embedding = await useModel.embed(text);
-    kbEmbeddings.push({
-      item,
-      embedding: embedding.arraySync()[0],
-    });
-  }
-
-  addMessage("✅ Ready! Ask me about Shruti's experience.", "bot");
+// -------- UI helpers --------
+function setStatus(text, variant) {
+  statusPill.textContent = text;
+  statusPill.classList.remove("ok", "warn");
+  if (variant) statusPill.classList.add(variant);
 }
 
-// ✅ Chat UI Helpers
-function addMessage(text, sender) {
-  const messages = document.getElementById("messages");
+function setInputDisabled(disabled) {
+  inputEl.disabled = disabled;
+  sendBtn.disabled = disabled;
+}
+
+function appendMessage(node, sender = "bot") {
+  const wrapper = document.createElement("div");
+  wrapper.className = `msg ${sender}`;
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.appendChild(node);
+  wrapper.appendChild(bubble);
+  messagesEl.appendChild(wrapper);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return wrapper;
+}
+
+function addBotMessage(text) {
   const div = document.createElement("div");
-  div.className = sender;
-  div.innerHTML = text;
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
+  div.textContent = text;
+  return appendMessage(div, "bot");
 }
 
-// ✅ Cosine Similarity
-function cosineSimilarity(a, b) {
-  const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
-  const normA = Math.sqrt(a.reduce((sum, val) => sum + val * val, 0));
-  const normB = Math.sqrt(b.reduce((sum, val) => sum + val * val, 0));
-  return dot / (normA * normB);
+function addUserMessage(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return appendMessage(div, "user");
 }
 
-// ✅ Semantic Search
-async function search(query, topK = 3) {
-  const queryEmbedding = (await useModel.embed(query)).arraySync()[0];
+function addSystemMessage(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return appendMessage(div, "system");
+}
 
-  const scores = kbEmbeddings.map((entry) => {
-    const sim = cosineSimilarity(queryEmbedding, entry.embedding);
-    return { item: entry.item, score: sim };
+function addThinking() {
+  const dots = document.createElement("div");
+  dots.className = "typing";
+  dots.innerHTML = "<span></span><span></span><span></span>";
+  return appendMessage(dots, "bot");
+}
+
+// -------- Fallback keyword index (if model fails) --------
+const STOP = new Set(
+  "a,an,the,and,or,of,in,on,for,to,with,without,by,at,from,as,that,this,is,are,was,were,be,been,has,have,had,do,does,did,not,if,but,then,so,than,it,its,into,over,per,via,about,your,my,our,their,them,they,you,we,i".split(
+    ","
+  )
+);
+
+function tokenize(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w && w.length > 1 && !STOP.has(w));
+}
+
+function buildFallbackIndex(docs) {
+  const vocab = new Map();
+  const tokensPerDoc = docs.map((d) => {
+    const text = `${d.title || ""} ${d.area || ""} ${(d.tags || []).join(" ")} ${
+      d.summary || ""
+    } ${d.details || ""}`;
+    const toks = tokenize(text);
+    toks.forEach((t) => {
+      if (!vocab.has(t)) vocab.set(t, vocab.size);
+    });
+    return toks;
+  });
+  const df = new Float64Array(vocab.size);
+  tokensPerDoc.forEach((toks) => {
+    const seen = new Set();
+    toks.forEach((t) => {
+      const id = vocab.get(t);
+      if (!seen.has(id)) {
+        df[id]++;
+        seen.add(id);
+      }
+    });
+  });
+  const idf = new Float64Array(vocab.size);
+  const N = docs.length;
+  for (let i = 0; i < idf.length; i++) idf[i] = Math.log((N + 1) / (df[i] + 1)) + 1;
+
+  const docVecs = tokensPerDoc.map((toks, idx) => {
+    const vec = new Float64Array(vocab.size);
+    const tf = new Map();
+    toks.forEach((t) => tf.set(t, (tf.get(t) || 0) + 1));
+    let norm = 0;
+    tf.forEach((count, tok) => {
+      const j = vocab.get(tok);
+      const w = (count / Math.sqrt(toks.length)) * idf[j];
+      vec[j] = w;
+      norm += w * w;
+    });
+    const inv = 1 / Math.max(Math.sqrt(norm), 1e-9);
+    for (let j = 0; j < vec.length; j++) vec[j] *= inv;
+    return { vec, item: docs[idx] };
   });
 
-  return scores
-    .sort((a, b) => b.score - a.score)
-    .slice(0, topK)
-    .map((r) => r.item);
+  return { vocab, idf, docs: docVecs };
 }
 
-// ✅ Chat Handler with Realistic Delay
-async function handleUserQuery() {
-  const input = document.getElementById("user-input");
-  const query = input.value.trim();
+function embedFallbackQuery(query) {
+  if (!fallbackIndex) return null;
+  const toks = tokenize(query);
+  const vec = new Float64Array(fallbackIndex.vocab.size);
+  const tf = new Map();
+  toks.forEach((t) => tf.set(t, (tf.get(t) || 0) + 1));
+  let norm = 0;
+  tf.forEach((count, tok) => {
+    const j = fallbackIndex.vocab.get(tok);
+    if (j === undefined) return;
+    const w = (count / Math.sqrt(toks.length)) * fallbackIndex.idf[j];
+    vec[j] = w;
+    norm += w * w;
+  });
+  const inv = 1 / Math.max(Math.sqrt(norm), 1e-9);
+  for (let j = 0; j < vec.length; j++) vec[j] *= inv;
+  return vec;
+}
+
+// -------- Semantic search helpers --------
+function cosineSimilarity(a, b) {
+  let dot = 0;
+  let normA = 0;
+  let normB = 0;
+  for (let i = 0; i < a.length; i++) {
+    dot += a[i] * b[i];
+    normA += a[i] * a[i];
+    normB += b[i] * b[i];
+  }
+  return dot / (Math.sqrt(normA) * Math.sqrt(normB) || 1e-9);
+}
+
+async function buildEmbeddingsWithModel(model, docs) {
+  const texts = docs.map(
+    (item) =>
+      `${item.title || ""} ${item.area || ""} ${(item.tags || []).join(" ")} ${
+        item.summary || ""
+      } ${item.details || ""}`
+  );
+  const tensor = await model.embed(texts);
+  const arr = tensor.arraySync();
+  tensor.dispose();
+  return arr.map((vec, idx) => ({ item: docs[idx], embedding: vec }));
+}
+
+async function searchWithModel(query, topK = 3) {
+  const tensor = await useModel.embed([query]);
+  const qv = tensor.arraySync()[0];
+  tensor.dispose();
+  const scores = kbEmbeddings.map((entry) => ({
+    item: entry.item,
+    score: cosineSimilarity(qv, entry.embedding),
+  }));
+  scores.sort((a, b) => b.score - a.score);
+  return scores.slice(0, topK).map((s) => s.item);
+}
+
+function searchWithFallback(query, topK = 3) {
+  if (!fallbackIndex) return [];
+  const qv = embedFallbackQuery(query);
+  if (!qv) return [];
+  const scored = fallbackIndex.docs.map((d) => ({
+    item: d.item,
+    score: cosineSimilarity(qv, d.vec),
+  }));
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, topK).map((s) => s.item);
+}
+
+async function search(query, topK = 3) {
+  if (useModel && kbEmbeddings.length) return searchWithModel(query, topK);
+  return searchWithFallback(query, topK);
+}
+
+// -------- Render results --------
+function buildResultsNode(results) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "result-list";
+
+  results.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "result-card";
+
+    const head = document.createElement("div");
+    head.className = "result-head";
+    const title = document.createElement("div");
+    title.className = "result-title";
+    title.textContent = item.title || "Experience";
+    head.appendChild(title);
+
+    const metaText = [item.company, item.area].filter(Boolean).join(" • ");
+    if (metaText) {
+      const meta = document.createElement("div");
+      meta.className = "result-meta";
+      meta.textContent = metaText;
+      head.appendChild(meta);
+    }
+
+    const summary = document.createElement("div");
+    summary.className = "result-summary";
+    summary.textContent = item.summary || "";
+
+    const detail = document.createElement("div");
+    detail.className = "result-detail";
+    detail.textContent = item.details || "";
+
+    const tagsRow = document.createElement("div");
+    tagsRow.className = "tag-row";
+    (item.tags || []).slice(0, 6).forEach((tag) => {
+      const pill = document.createElement("span");
+      pill.className = "tag-pill";
+      pill.textContent = tag;
+      tagsRow.appendChild(pill);
+    });
+
+    card.append(head, summary, detail, tagsRow);
+    wrapper.appendChild(card);
+  });
+
+  return wrapper;
+}
+
+// -------- Chat handling --------
+async function handleUserQuery(event) {
+  event?.preventDefault();
+  const query = inputEl.value.trim();
   if (!query) return;
-  addMessage(query, "user");
-  input.value = "";
 
-  // ✅ Fake thinking delay
-  await new Promise((resolve) => setTimeout(resolve, 700));
-  addMessage("🤔 Let me think...", "bot");
-  await new Promise((resolve) => setTimeout(resolve, 900));
+  addUserMessage(query);
+  inputEl.value = "";
 
-  const results = await search(query);
-
-  if (results.length === 0) {
-    addMessage("I couldn't find anything relevant.", "bot");
+  if (!ready) {
+    addSystemMessage("Still loading the knowledge base. One sec...");
     return;
   }
 
-  let response = "✅ Here's what matches:<br><br>";
-  results.forEach((r) => {
-    response += `<b>${r.title}</b><br>• ${r.summary}<br>
-    <button onclick='showDetails(\`${JSON.stringify(r.details)}\`)'>Show Details</button><br><br>`;
-  });
+  const thinking = addThinking();
+  let results = [];
+  try {
+    results = await search(query, 3);
+  } catch (err) {
+    console.error("Search failed", err);
+  } finally {
+    thinking.remove();
+  }
 
-  addMessage(response, "bot");
+  if (!results.length) {
+    addBotMessage("I could not find anything relevant. Try a broader topic or another phrasing.");
+    return;
+  }
+
+  const node = buildResultsNode(results);
+  appendMessage(node, "bot");
 }
 
-// ✅ Details Popup
-function showDetails(details) {
-  alert(details);
+// -------- Init --------
+async function init() {
+  setInputDisabled(true);
+  setStatus("Loading experience…");
+
+  try {
+    kb = await fetch("kb.json").then((res) => res.json());
+  } catch (err) {
+    console.error("Failed to load kb.json", err);
+    addSystemMessage("Could not load experience data. Please refresh the page.");
+    setStatus("Load failed", "warn");
+    return;
+  }
+
+  // Build fallback index immediately so we can answer even if the model fails.
+  fallbackIndex = buildFallbackIndex(kb);
+  ready = true;
+  setInputDisabled(false);
+  addBotMessage("Hi, I'm Shruti 👋");
+  addBotMessage("Ask about ML systems, personalization, causal inference, or experimentation. I'll surface the closest projects with full details.");
+
+  setStatus("Loading model…");
+  try {
+    if (typeof tf === "undefined" || typeof use === "undefined") {
+      throw new Error("TensorFlow.js not available");
+    }
+    await tf.ready();
+    useModel = await use.load();
+    kbEmbeddings = await buildEmbeddingsWithModel(useModel, kb);
+    setStatus("Model ready", "ok");
+  } catch (err) {
+    console.warn("Model load failed, using fallback", err);
+    useModel = null;
+    setStatus("Using fallback search", "warn");
+    addSystemMessage(
+      "Model download failed, so I'm using a lightweight keyword search. Results may be a bit less precise."
+    );
+  }
 }
 
-// ✅ Send Button & Enter Key
-document.getElementById("send-btn").addEventListener("click", handleUserQuery);
-document.getElementById("user-input").addEventListener("keypress", (e) => {
-  if (e.key === "Enter") handleUserQuery();
-});
+// -------- Wiring --------
+form.addEventListener("submit", handleUserQuery);
+chips.forEach((chip) =>
+  chip.addEventListener("click", () => {
+    inputEl.value = chip.dataset.question || chip.textContent;
+    inputEl.focus();
+  })
+);
 
-// ✅ Start App
 init();

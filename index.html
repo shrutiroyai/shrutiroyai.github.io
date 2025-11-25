@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shruti Experience Chat</title>
+  <title>Ask Shruti Anything — Interactive Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 
   <!-- Tensorflow + USE -->
@@ -11,20 +14,51 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Ask about Shruti's Experience</h1>
-    <div id="chat-window">
-      <div id="messages"></div>
-    </div>
-    <div class="input-area">
-      <input
-        type="text"
-        id="user-input"
-        placeholder="Ask something like: Does she have A/B testing experience?"
-      />
-      <button id="send-btn">Send</button>
-    </div>
-  </div>
+  <div class="bg-shape"></div>
+  <main class="layout">
+    <section class="hero">
+      <div class="hero-content">
+        <div class="photo-card">
+          <img src="profile.png" alt="Shruti Roy">
+        </div>
+        <div>
+          <h1>Hi, I'm <span class="accent">Shruti</span> <span class="accent">Roy</span></h1>
+          <p class="lede">ML · Causal Inference · Personalization · Data Scientist</p>
+          <div class="pill-row" id="prompt-chips">
+            <button class="prompt-chip" data-question="What did she build with LLMs or agents?">LLM agents & MCP</button>
+            <button class="prompt-chip" data-question="Has she run A/B tests or causal experiments?">Experiment design</button>
+            <button class="prompt-chip" data-question="Tell me about personalization work.">Personalization</button>
+            <button class="prompt-chip" data-question="How has she deployed ML in production?">MLOps</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chat-panel">
+      <div class="panel-header">
+        <div class="avatar">SR</div>
+        <div>
+          <div class="panel-title">Shruti Roy</div>
+          <div class="panel-subtitle">ML systems · Experimentation · Personalization</div>
+        </div>
+        <span id="status-pill" class="status-pill">Loading model…</span>
+      </div>
+
+      <div id="messages" class="messages" aria-live="polite"></div>
+
+      <form id="chat-form" class="input-row">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Ask something like: How has she used causal inference?"
+          autocomplete="off"
+          required
+        />
+        <button id="send-btn" type="submit">Send</button>
+      </form>
+      <p class="hint">Try: “How has she deployed ML to production?”, “Any experience with vector search?”, or “Tell me about experimentation.”</p>
+    </section>
+  </main>
 
   <script src="app.js"></script>
 </body>
