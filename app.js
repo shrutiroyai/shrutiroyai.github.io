@@ -6,10 +6,10 @@ const chips = document.querySelectorAll(".prompt-chip");
 const form = document.getElementById("chat-form");
 
 let kb = [];
-let kbEmbeddings = [];
-let useModel = null;
 let ready = false;
 let fallbackIndex = null;
+let useModel = null;
+let kbEmbeddings = [];
 
 // -------- UI helpers --------
 function setStatus(text, variant) {
@@ -153,6 +153,18 @@ function cosineSimilarity(a, b) {
   return dot / (Math.sqrt(normA) * Math.sqrt(normB) || 1e-9);
 }
 
+function searchWithFallback(query, topK = 3) {
+  if (!fallbackIndex) return [];
+  const qv = embedFallbackQuery(query);
+  if (!qv) return [];
+  const scored = fallbackIndex.docs.map((d) => ({
+    item: d.item,
+    score: cosineSimilarity(qv, d.vec),
+  }));
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, topK).map((s) => s.item);
+}
+
 async function buildEmbeddingsWithModel(model, docs) {
   const texts = docs.map(
     (item) =>
@@ -170,28 +182,22 @@ async function searchWithModel(query, topK = 3) {
   const tensor = await useModel.embed([query]);
   const qv = tensor.arraySync()[0];
   tensor.dispose();
-  const scores = kbEmbeddings.map((entry) => ({
+  const scored = kbEmbeddings.map((entry) => ({
     item: entry.item,
     score: cosineSimilarity(qv, entry.embedding),
-  }));
-  scores.sort((a, b) => b.score - a.score);
-  return scores.slice(0, topK).map((s) => s.item);
-}
-
-function searchWithFallback(query, topK = 3) {
-  if (!fallbackIndex) return [];
-  const qv = embedFallbackQuery(query);
-  if (!qv) return [];
-  const scored = fallbackIndex.docs.map((d) => ({
-    item: d.item,
-    score: cosineSimilarity(qv, d.vec),
   }));
   scored.sort((a, b) => b.score - a.score);
   return scored.slice(0, topK).map((s) => s.item);
 }
 
 async function search(query, topK = 3) {
-  if (useModel && kbEmbeddings.length) return searchWithModel(query, topK);
+  if (useModel && kbEmbeddings.length) {
+    try {
+      return await searchWithModel(query, topK);
+    } catch (err) {
+      console.warn("Model search failed, falling back", err);
+    }
+  }
   return searchWithFallback(query, topK);
 }
 
@@ -296,8 +302,13 @@ async function init() {
   setInputDisabled(false);
   addBotMessage("Hi, I'm Shruti 👋");
   addBotMessage("Ask about ML systems, personalization, causal inference, or experimentation. I'll surface the closest projects with full details.");
-
   setStatus("Loading model…");
+
+  // Fire-and-forget model load; fallback search stays available.
+  loadModel();
+}
+
+async function loadModel() {
   try {
     if (typeof tf === "undefined" || typeof use === "undefined") {
       throw new Error("TensorFlow.js not available");
@@ -307,12 +318,10 @@ async function init() {
     kbEmbeddings = await buildEmbeddingsWithModel(useModel, kb);
     setStatus("Model ready", "ok");
   } catch (err) {
-    console.warn("Model load failed, using fallback", err);
+    console.warn("Model load failed, staying on fallback", err);
     useModel = null;
     setStatus("Using fallback search", "warn");
-    addSystemMessage(
-      "Model download failed, so I'm using a lightweight keyword search. Results may be a bit less precise."
-    );
+    addSystemMessage("Could not load the model; keeping fast keyword search instead.");
   }
 }
 
