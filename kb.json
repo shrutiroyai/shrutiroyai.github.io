@@ -1,285 +1,337 @@
 [
   {
-    "id": "amazon-pricing",
-    "title": "Data Scientist II \u2014 Pricing & Promotion Optimization (Amazon Devices)",
-    "area": "Production ML, Optimization, Forecasting",
+    "id": "amazon-homepage-ranking-ctr",
+    "title": "Personalization & Ranking — Amazon",
+    "company": "Amazon",
+    "area": "Personalization",
     "tags": [
-      "Amazon",
-      "pricing",
-      "promotions",
+      "personalization",
+      "ranking models",
+      "CTR",
+      "homepage",
+      "LightGBM",
+      "AWS Lambda",
+      "AWS EMR",
+      "AWS SQS",
+      "MLOps",
+      "API integration"
+    ],
+    "summary": "Increased homepage campaign CTR by 18% across 200M weekly customers by owning the LightGBM ranking model end-to-end and architecting a scalable Lambda+EMR+SQS scoring pipeline integrated with internal APIs.",
+    "details": "At Amazon Devices, I led the design and deployment of a LightGBM-based ranking model that personalized homepage campaign placements for over 200M weekly customers. I built a production scoring pipeline where AWS Lambda orchestrated scoring jobs, EMR handled distributed inference over large customer cohorts, and SQS buffered results to downstream services. The pipeline integrated with internal APIs to fetch real-time behavioral and catalog features and to write scores back into serving systems. I implemented feature engineering, offline evaluation, and A/B testing to validate performance gains before full rollout. I also set up monitoring for latency, throughput, and model health to ensure reliability at scale. This system directly enabled an 18% uplift in homepage campaign CTR and became the core personalization engine for Devices marketing surfaces."
+  },
+  {
+    "id": "amazon-experiment-agent-setup",
+    "title": "Experimentation & A/B Testing — Amazon",
+    "company": "Amazon",
+    "area": "Experimentation",
+    "tags": [
+      "A/B testing",
+      "experimentation",
+      "power analysis",
+      "guardrails",
+      "LLM agents",
+      "MCP",
+      "automation",
+      "experiment design"
+    ],
+    "summary": "Reduced A/B experiment setup time by 85% (days to ~10 minutes) for 30+ PMs by developing an MCP-based experiment-design agent automating statistical calculations, guardrail checks, and results interpretation.",
+    "details": "I built an experiment-design agent that wrapped statistical best practices behind a conversational interface so product managers could configure A/B tests using natural language. The agent, implemented via an MCP-style tool framework, automated power and sample-size calculations, suggested experiment duration based on historical traffic and variance, and enforced metric guardrails before launch. It integrated with internal data APIs to retrieve baseline performance, traffic volumes, and customer cohorts, and it generated standardized experiment specs suitable for engineering handoff. After experiments concluded, the agent computed treatment effects, confidence intervals, and guardrail outcomes, and synthesized a plain-language summary for stakeholders. This automation reduced setup time from several days of back-and-forth to roughly ten minutes, and it made high-quality experimentation accessible to over 30 PMs while improving consistency in how tests were designed and interpreted."
+  },
+  {
+    "id": "amazon-anomaly-detection-nixtla",
+    "title": "Time Series Anomaly Detection — Amazon",
+    "company": "Amazon",
+    "area": "Time Series & Anomaly Detection",
+    "tags": [
+      "time series",
+      "anomaly detection",
+      "uncertainty",
+      "Nixtla",
+      "forecasting",
+      "seasonality",
+      "pricing"
+    ],
+    "summary": "Improved anomaly detection precision by 22% across 100+ devices by engineering an uncertainty-aware sales deviation monitoring system using Nixtla to distinguish true demand drops from seasonal or pricing effects.",
+    "details": "To avoid false alarms in sales monitoring, I implemented an anomaly detection system that relied on probabilistic time-series forecasts rather than simple threshold rules. Using the Nixtla ecosystem, I trained models that produced prediction intervals for device sales, incorporating seasonality, trend, and price-related effects. The system computed deviations between actuals and forecast intervals and only escalated anomalies when deviations exceeded statistically meaningful bounds. I built automated jobs to retrain models and refresh forecasts on a regular cadence, and integrated the results into dashboards and alerting channels used by category managers. By explicitly modeling uncertainty and seasonality, the system reduced noise from expected patterns like weekends, promotions, and price changes. This approach improved anomaly detection precision by 22% across more than 100 device types, allowing teams to focus on genuine demand issues instead of chasing spurious signals."
+  },
+  {
+    "id": "amazon-launch-forecast-nbeats",
+    "title": "Launch Forecasting — Amazon",
+    "company": "Amazon",
+    "area": "Forecasting",
+    "tags": [
       "time series",
       "forecasting",
-      "optimization",
-      "MILP",
-      "N-BEATS"
+      "N-BEATS",
+      "cold start",
+      "demand planning",
+      "inventory",
+      "supply chain"
     ],
-    "summary": "Built large-scale pricing and promotion optimization models for Amazon Devices, combining demand forecasting and mixed-integer optimization to drive multi-million dollar savings.",
-    "details": "Developed a Mixed Integer Linear Programming (MILP) model supporting 20+ business constraints to optimize annual promotion planning for all devices, achieving around $3M cost savings in the first year. Designed and implemented N-BEATS time series models to forecast sales for new device launches, solving cold-start issues by leveraging related signals and historical launches. Owned end-to-end pipelines on AWS (EMR, S3, Lambda, etc.), making these models production-ready and monitored."
+    "summary": "Reduced launch forecast error by 15% for new devices by developing an N-BEATS forecasting pipeline that mitigated cold-start issues and improved inventory and supply chain planning accuracy.",
+    "details": "I designed a launch forecasting framework for new Amazon devices using N-BEATS-based time-series models that could leverage patterns from related historical launches. To handle cold-start scenarios, I built features that mapped new devices to comparable predecessors based on category, price band, and feature set, and I trained models across families of products rather than in isolation. The pipeline generated weekly demand forecasts along with error bands that were consumed by supply chain and inventory planning teams. I implemented the training and inference pipeline using distributed compute on AWS, and created automated backtesting routines to compare N-BEATS performance against simpler baselines like ARIMA. These improvements reduced forecast error by about 15% for new launches, which translated into better buy plans, fewer stockouts, and more controlled overstock risk. The system became a key input to pre-launch and early-life volume planning conversations."
   },
   {
-    "id": "realtor-marketing",
-    "title": "Staff Data Scientist \u2014 Marketing Attribution (Realtor.com)",
-    "area": "Marketing attribution, experimentation, MLOps",
+    "id": "realtor-lstm-attribution-roi",
+    "title": "Marketing Attribution — Realtor.com",
+    "company": "Realtor.com",
+    "area": "Marketing Attribution",
     "tags": [
-      "Realtor",
-      "attribution",
+      "marketing attribution",
+      "ROI optimization",
       "LSTM",
+      "sequence modeling",
+      "AWS Lambda",
+      "AWS SageMaker",
+      "AWS EMR",
+      "serverless",
+      "campaign optimization"
+    ],
+    "summary": "Drove a 13% lift in ROI by enabling optimized channel spend allocation using an LSTM-based attribution model (PR AUC: 76.3%), deployed through serverless pipelines (Lambda, SageMaker, EMR) for consistent and scalable inference.",
+    "details": "At Realtor.com, I built a sequence-based attribution model that used an LSTM architecture to capture how users interact with multiple marketing channels over time before converting. The model was trained to distinguish incremental contribution from each channel and delivered a PR AUC of 76.3% on holdout data, providing a more nuanced view than rule-based attribution schemes. I productionized the solution with a serverless architecture: AWS Lambda orchestrated inference flows, SageMaker hosted the trained LSTM model, and EMR handled large-batch scoring for historical analyses. Marketing teams used the channel-level incremental lift estimates to reallocate budgets toward higher-ROI campaigns and reduce spend on underperforming touchpoints. I also established monitoring on model performance and data drift to keep recommendations reliable. This data-driven optimization drove an estimated 13% lift in marketing ROI compared to prior spend allocation practices."
+  },
+  {
+    "id": "realtor-cohort-engine-vectors",
+    "title": "Natural-Language Cohort Engine — Realtor.com",
+    "company": "Realtor.com",
+    "area": "Cohort Modeling",
+    "tags": [
+      "cohort modeling",
+      "behavioral embeddings",
+      "OpenSearch",
+      "vector search",
+      "retrieval",
+      "NLP",
+      "segmentation",
+      "rental leads"
+    ],
+    "summary": "Drove a 7.8% lift in rental lead conversion by building a natural-language cohort engine using behavioral embeddings and OpenSearch vector search to retrieve semantically similar customers from NL-defined seed behaviors.",
+    "details": "I created a cohort discovery engine that allowed marketers to define target audiences using plain language descriptions of behavior, such as 'users who frequently browse 2-bedroom rentals in urban areas.' These descriptions were mapped to embedding space using NLP models, and we generated seed sets of users whose historical behavior matched the described patterns. I then trained behavioral embeddings for all users and indexed them in an OpenSearch-backed vector store to enable fast similarity search. Marketers could expand from a small seed set to large, semantically similar cohorts without writing SQL or complex filters. We used these cohorts to power targeted rental campaigns, and A/B tests showed a 7.8% lift in lead conversion relative to existing segmentation methods. This system combined NLP, embeddings, and vector search to bridge the gap between business intent and technical audience construction."
+  },
+  {
+    "id": "realtor-etl-analytics-automation",
+    "title": "Marketing Analytics Automation — Realtor.com",
+    "company": "Realtor.com",
+    "area": "Data Engineering & Analytics",
+    "tags": [
+      "ETL",
+      "AWS Glue",
+      "AWS EMR",
+      "dashboards",
+      "automation",
+      "marketing analytics",
+      "data pipelines"
+    ],
+    "summary": "Reduced manual reporting effort by ~35% by building production ETL pipelines using AWS Glue, EMR, and automated dashboards, standardizing analytics workflows for marketing stakeholders.",
+    "details": "I designed and implemented ETL pipelines that consolidated marketing performance data from multiple sources into a clean, analytics-ready warehouse. Using AWS Glue for metadata-driven ETL jobs and EMR for heavy transformations, I automated the aggregation of campaign, channel, and funnel metrics that had previously required ad-hoc SQL and spreadsheet work. On top of this curated data layer, I built standardized dashboards that provided self-service access to KPIs for campaign managers and leadership. The pipelines handled scheduling, error reporting, and data quality checks so stakeholders could rely on consistent, timely metrics. This automation reduced manual reporting and one-off analysis requests by roughly 35%, freeing analysts to focus on deeper insights. It also improved the reliability and repeatability of marketing performance reviews."
+  },
+  {
+    "id": "recology-routing-xgboost-isolation",
+    "title": "Routing Optimization — Recology",
+    "company": "Recology",
+    "area": "Routing Optimization",
+    "tags": [
+      "routing optimization",
+      "XGBoost",
+      "Isolation Forest",
+      "operations",
+      "logistics",
+      "time predictions",
+      "ROI"
+    ],
+    "summary": "Improved route ROI by 8% using XGBoost and Isolation Forest models to forecast pickup times and anticipate operational delays.",
+    "details": "At Recology, I worked on optimizing garbage collection routes by predicting how long each stop and route segment would take under varying conditions. I trained XGBoost models on historical telemetry, route, and operational data to forecast pickup times, and complemented them with Isolation Forest models to detect unusual patterns indicative of delays or disruptions. These predictions were fed into route planning tools to adjust sequence, staffing, or start times to improve on-time performance and reduce unproductive driving. I collaborated closely with operations managers to validate model outputs against real-world constraints like truck capacity and union rules. The resulting system enabled better utilization of trucks and crews and delivered an estimated 8% improvement in route ROI. It demonstrated how ML-driven time predictions and anomaly detection can directly improve field operations."
+  },
+  {
+    "id": "recology-contract-summarization-t5",
+    "title": "Contract Summarization — Recology",
+    "company": "Recology",
+    "area": "NLP",
+    "tags": [
+      "NLP",
+      "text summarization",
+      "T5",
+      "legal tech",
+      "contracts",
+      "clause extraction",
+      "document automation"
+    ],
+    "summary": "Accelerated contract review cycles by 30% through a T5-based summarization model extracting key legal clauses from long-form service agreements.",
+    "details": "I built an NLP pipeline to help Recology’s legal and business teams quickly understand the most important terms in lengthy service agreements. Using a T5-based summarization model fine-tuned on contract-like text, I generated concise summaries that emphasized key clauses such as termination, liability, and pricing terms. I also added lightweight rule-based extraction for certain structured fields, such as dates and monetary amounts, to complement the abstractive summaries. The system was exposed through a simple internal UI where users could upload contracts and receive a structured summary for review. By reducing the amount of text attorneys and analysts needed to read word-for-word, we shortened review cycles by about 30%. This project showcased how modern NLP models can reduce bottlenecks in legal and compliance workflows."
+  },
+  {
+    "id": "recology-waste-classification-resnet",
+    "title": "Waste Classification — Recology",
+    "company": "Recology",
+    "area": "Computer Vision",
+    "tags": [
+      "computer vision",
+      "ResNet-50",
+      "image classification",
+      "recycling",
+      "waste management",
+      "CNN"
+    ],
+    "summary": "Developed a ResNet-50 waste-classification model achieving 95% accuracy across five material categories, enabling future automation of recycling workflows.",
+    "details": "To support future automation in recycling facilities, I developed an image classification model that could recognize different types of waste materials. Using ResNet-50 as the backbone, I trained the model on labeled images of glass, plastic, cardboard, paper, and general trash collected from facility cameras. I performed data augmentation and class balancing to improve robustness across lighting and orientation variations. The model achieved around 95% accuracy on a held-out test set, demonstrating strong performance for an early-stage prototype. I packaged the model for batch inference and developed a proof-of-concept pipeline that could score frames captured from conveyor belt cameras. Although not yet deployed in production, the work provided a credible foundation for future automation and analytics around recycling stream composition."
+  },
+  {
+    "id": "flipkart-recommendations-collaborative",
+    "title": "Recommendations — Flipkart",
+    "company": "Flipkart E-commerce",
+    "area": "Recommendations",
+    "tags": [
+      "recommendation models",
+      "collaborative filtering",
+      "e-commerce",
+      "team leadership",
+      "conversion",
+      "coverage"
+    ],
+    "summary": "Increased recommendation coverage by 14% and improved units sold by 10% by leading two DSs in building collaborative filtering models for private-label products.",
+    "details": "At Flipkart, I led a small team of data scientists to improve the recommendations for private-label products, which historically suffered from sparse interactions. We built collaborative filtering models that leveraged user–item interaction histories and derived similarity between products, using techniques such as matrix factorization and neighborhood-based recommenders. To address cold-start issues for new private-label items, we incorporated content and catalog attributes as auxiliary features. I coordinated the design of offline evaluation metrics and online A/B tests to validate lifts in recommendation coverage and downstream sales. The system increased the proportion of products eligible for recommendations by 14% and drove a 10% uplift in units sold for the targeted portfolio. This project combined recommendation modeling, experimentation, and leadership of other data scientists to deliver measurable business impact."
+  },
+  {
+    "id": "flipkart-experiment-tool-launch",
+    "title": "Experimentation Platform — Flipkart",
+    "company": "Flipkart E-commerce",
+    "area": "Experimentation",
+    "tags": [
       "A/B testing",
-      "Flask",
-      "EC2"
+      "experimentation tooling",
+      "internal tools",
+      "launch metrics",
+      "experiment design",
+      "Python"
     ],
-    "summary": "Led marketing attribution and experimentation tools at Realtor.com, building models and services that informed channel spend and accelerated campaign learning.",
-    "details": "Created a marketing attribution model using LSTM with ~86% AUC to measure channel-level impact. Built a real-time A/B testing impact sizing tool with Flask and EC2 that reduced time to market for campaigns by about two weeks. Set up cloud data pipelines with Lambda, Sagemaker, Glue, and EMR to automate reports and scale models for marketing stakeholders."
+    "summary": "Improved launch success metrics by driving experiment design and analysis for five major initiatives and developing an internal A/B experimentation tool that reduced setup time by 30%.",
+    "details": "In addition to running experiments, I built an internal experimentation tool to standardize how A/B tests were set up and analyzed at Flipkart. The tool provided templates for defining hypotheses, assigning traffic splits, and selecting primary and secondary metrics. It integrated with internal tracking systems to automatically pull event and conversion data and generated pre-specified analysis reports. I partnered with PMs and engineers on at least five high-visibility launches, helping them use the tool to design clean experiments and interpret results in a statistically sound way. By encapsulating best practices in a single interface, the platform reduced the effort required to launch and analyze tests by about 30%. It also improved the quality and transparency of decision-making around product changes."
   },
   {
-    "id": "flipkart-search-reco",
-    "title": "Senior Data Scientist \u2014 Search & Recommendations (Flipkart)",
-    "area": "Recommendation systems, experimentation",
+    "id": "flipkart-anomaly-stl-decomposition",
+    "title": "Sales Anomaly Decomposition — Flipkart",
+    "company": "Flipkart E-commerce",
+    "area": "Time Series & Anomaly Detection",
     "tags": [
-      "recommendations",
-      "search",
-      "random forest",
-      "SMOTE",
-      "experimentation",
-      "A/B testing"
+      "time series",
+      "STL decomposition",
+      "anomaly detection",
+      "demand shocks",
+      "seasonality"
     ],
-    "summary": "Improved onsite search and recommendation quality at Flipkart using ML models and experimentation to boost conversion and cross-sell performance.",
-    "details": "Implemented a Random Forest model with SMOTE on visit-level data to understand user conversion, improving click conversion by ~45 bps. Developed new affinity calculations for cross-selling items that drove a 14% increase in items with recommendations. Designed A/B experiments for several product launches and created an internal A/B testing tool to centralize metrics and decision-making."
+    "summary": "Reduced anomaly investigation time by 25% by deploying STL-based decomposition models to isolate demand shocks and seasonal patterns across categories.",
+    "details": "To make it easier for category managers to understand abnormal sales movements, I implemented a time-series analysis pipeline based on STL decomposition. For each product category, sales were decomposed into trend, seasonality, and residual components so that true demand shocks could be separated from expected patterns like holidays or weekly cycles. I integrated this decomposition into dashboards that highlighted when residuals exceeded certain thresholds and provided context for likely causes. This visibility helped teams quickly distinguish between genuine problems (e.g., supply issues or competitor promotions) and benign variation. The improved structure around anomaly detection reduced investigation time by roughly 25%, as analysts could focus on the most meaningful deviations. It also increased confidence in the reliability of routine performance monitoring."
   },
   {
-    "id": "walmart-forecasting",
-    "title": "Data Scientist \u2014 Retail Pricing & Assortment (Walmart Labs)",
-    "area": "Time series, forecasting, anomaly detection",
+    "id": "walmart-forecast-arimax-var",
+    "title": "Large-Scale Volume Forecasting — Walmart",
+    "company": "Walmart Labs",
+    "area": "Forecasting",
     "tags": [
-      "Walmart",
       "time series",
       "ARIMAX",
       "VAR",
       "forecasting",
-      "anomaly detection"
+      "pricing",
+      "assortment",
+      "retail"
     ],
-    "summary": "Built time-series forecasting and anomaly detection tools at Walmart Labs to support pricing, assortment, and operational decisions across millions of SKUs.",
-    "details": "Developed ARIMAX and VAR models to forecast volume lift for ~6.5M products with about 74% forecast accuracy, supporting pricing and assortment planning. Implemented STL decomposition-based sales anomaly detection and root cause analysis. Built an end-to-end pricing pipeline on Hadoop streaming, reducing processing time from ~14 hours to 8 hours."
+    "summary": "Forecasted volume lift for 6.5M+ products using ARIMAX and VAR models (74% accuracy), enabling pricing and assortment teams to improve planning accuracy by ~12%.",
+    "details": "At Walmart Labs, I built and scaled time-series models to forecast volume for millions of SKUs, supporting both pricing and assortment decisions. For many categories, I used ARIMAX models to incorporate price, promotion, and external signals into volume forecasts, while for others I employed VAR models to capture cross-category interactions. The system produced weekly forecasts at large scale, requiring careful attention to automation, model selection, and exception handling. I implemented backtesting frameworks to validate accuracy and systematically compare model families before rollout. The resulting forecasts, which achieved around 74% accuracy on key segments, were integrated into tools used by pricing and assortment teams to plan changes and simulate their impact. This improved planning accuracy by about 12% and reduced reliance on purely manual or heuristic-based forecasts."
   },
   {
-    "id": "recology-routing",
-    "title": "Data Science Intern \u2014 Routing Optimization (Recology)",
-    "area": "Routing optimization, clustering, geospatial ML",
+    "id": "walmart-dashboards-exec-analytics",
+    "title": "Executive Analytics Dashboards — Walmart",
+    "company": "Walmart Labs",
+    "area": "Analytics & Visualization",
     "tags": [
-      "Recology",
-      "routing",
-      "DBSCAN",
-      "XGBoost",
-      "geospatial"
+      "dashboards",
+      "Tableau",
+      "visualization",
+      "anomaly analysis",
+      "forecast visualization",
+      "executive reporting"
     ],
-    "summary": "Optimized garbage collection routes and operations at Recology using clustering, prediction, and computer vision.",
-    "details": "Automated sequencing of garbage pickup routes using geospatial data and DBSCAN clustering, reducing planning effort from two days to about 20 minutes. Predicted collection times with XGBoost and Isolation Forest, increasing route ROI by roughly 5%. Built a contract summarization tool using T5 and a garbage classification model using ResNet-50 with ~95% accuracy to classify glass/plastic/cardboard/paper/trash."
+    "summary": "Accelerated executive decision-making by developing Tableau dashboards to visualize anomalies, forecasts, and root-cause analyses across high-volume product categories.",
+    "details": "To make complex forecasting and anomaly analysis accessible to non-technical stakeholders, I designed Tableau dashboards that surfaced key metrics and diagnostic views. These dashboards combined forecast trajectories, confidence intervals, and realized sales, and overlaid annotations for significant events like major promotions or competitor actions. I also included drill-down capabilities that allowed users to move from high-level category views to specific SKUs or regions. By standardizing how anomalies and forecast performance were visualized, the dashboards reduced the need for bespoke slide decks and ad-hoc analyses. Executives and category leaders could review performance in regular business reviews and quickly identify areas requiring action. This streamlined reporting accelerated decision cycles and improved shared understanding across analytics and business teams."
   },
   {
-    "id": "experiments-llm-mcp",
-    "title": "Experiment Design Agent & LLM Personalization",
-    "area": "LLMs, agents, experimentation, personalization",
+    "id": "ola-shuttle-route-optimization",
+    "title": "Shuttle Route Optimization — Ola Cabs",
+    "company": "Ola Cabs",
+    "area": "Optimization & Operations Research",
     "tags": [
-      "LLM",
-      "MCP",
-      "agents",
-      "experimentation",
-      "RAG",
-      "personalization"
+      "linear programming",
+      "routing optimization",
+      "operations research",
+      "transportation",
+      "utilization"
     ],
-    "summary": "Built LLM and agent-based systems for experiment design and personalization, comparing MCP-style tools with classic RAG pipelines.",
-    "details": "Designed an MCP-style agent that automated experiment design for product teams: it queried traffic data, invoked a Lambda-based power and sample-size engine, and mapped catalog data so natural language inputs (e.g., 'run an Alexa experiment') resolve to internal identifiers. Prototyped LLM-driven personalization flows with retrieval over product and behavioral data, comparing MCP vs. RAG orchestrations, and focused on guardrails for factuality, latency, and cost."
+    "summary": "Lead Product Analyst, Ola Cabs (2016) — Increased shuttle-route utilization by 14% by optimizing route structures using linear programming under real-world demand and capacity constraints.",
+    "details": "In my role at Ola Cabs, I worked on improving the performance of shuttle services by redesigning routes using operations research techniques. I formulated the problem as a linear programming model that balanced demand coverage, vehicle capacity, and service time constraints while minimizing total route cost. The model incorporated historical demand patterns and geographic constraints to propose more efficient route groupings. I collaborated with product and operations teams to validate the feasibility of the optimized routes and to pilot them in selected cities. Post-launch analysis showed a 14% increase in shuttle utilization, driven by better matching between routes and where/when customers wanted to travel. This project demonstrated my ability to translate business problems into mathematical optimization formulations and drive operational improvements."
   },
-{
-  "id": "causal-ab-inference",
-  "title": "Causal Inference for A/B-like Settings",
-  "area": "Causal inference, experimentation",
-  "tags": [
-    "causal inference",
-    "A/B testing",
-    "experimentation"
-  ],
-  "summary": "Applied an S-Learner causal ML framework to estimate incremental lift for Amazon product changes in situations where classic A/B tests were underpowered or infeasible.",
-  "details": "Trained an XGBoost S-Learner with treatment indicators to generate counterfactual predictions and quantify incremental impact for scenarios such as accessory attach, while adjusting for seasonality and holiday patterns. Combined experiment design intuition with uplift-style reasoning to deliver clear, actionable insights to product and marketing partners."
-}
-,  {
-    "id": "resume",
-    "title": "Resume — Shruti Roy",
-    "area": "Full resume data",
+  {
+    "id": "zs-incentive-governance-model",
+    "title": "Incentive Governance Modeling — ZS Associates",
+    "company": "ZS Associates",
+    "area": "Analytics & Governance",
     "tags": [
-      "resume",
-      "profile",
-      "experience",
-      "education",
-      "skills"
+      "linear regression",
+      "incentive modeling",
+      "governance",
+      "compensation analytics",
+      "statistical modeling"
     ],
-    "summary": "Structured resume JSON for Shruti Roy with summary, experience, education, and skills sections.",
-    "details": {
-      "data": {
-        "name": "Shruti Roy",
-        "headline": "Senior Data Scientist",
-        "email": "shrutid203@gmail.com",
-        "phone": "(425)-628-3203",
-        "location": "Seattle, WA",
-        "linkedin": "linkedin.com/in/shruti-roy/",
-        "summary": "Senior Data Scientist specializing in large-scale ML systems (200M+ customers), causal inference, and end-to-end model deployment on AWS. Experienced in building ranking models, LLM/agent systems, A/B testing automation, and time-series forecasting for high-stakes product decisions.",
-        "openaiKey": "",
-        "skills": [
-          "AWS",
-          "Pytorch",
-          "FastAPI",
-          "A/B Testing",
-          "Scikit-Learn",
-          "EMR",
-          "SQL",
-          "Flask",
-          "Ollama",
-          "FASAI",
-          "Spark",
-          "Hadoop",
-          "Tableau"
-        ],
-        "experience": [
-          {
-            "bullets": [
-              "Increased homepage campaign CTR by 18% across 200M weekly customers by owning the LightGBM ranking model end-to-end and architecting a scalable Lambda+EMR+SQS scoring pipeline integrated with internal APIs.",
-              "Reduced A/B experiment setup time by 85% (days to ~10 minutes) for 30+ PMs by developing an MCP-based experiment-design agent automating statistical calculations, guardrail checks, and results interpretation.",
-              "Improved anomaly detection precision by 22% across 100+ devices by engineering an uncertainty-aware sales deviation monitoring system using Nixtla to distinguish true demand drops from seasonal or pricing effects.",
-              "Reduced launch forecast error by 15% for new devices by developing an N-BEATS forecasting pipeline that mitigated cold-start issues and improved inventory and supply chain planning accuracy."
-            ],
-            "role": "Senior Data Scientist",
-            "company": "Amazon",
-            "location": "Seattle, USA",
-            "start": "June 2022",
-            "end": "Present"
-          },
-          {
-            "bullets": [
-              "Drove a 13% lift in ROI by enabling optimized channel spend allocation using an LSTM-based attribution model (PR AUC: 76.3%), deployed through serverless pipelines (Lambda, SageMaker, EMR) for consistent and scalable inference.",
-              "Drove a 7.8% lift in rental lead conversion by building a natural-language cohort engine using behavioral embeddings and OpenSearch vector search to retrieve semantically similar customers from NL-defined seed behaviors.",
-              "Reduced manual reporting effort by ~35% by building production ETL pipelines using AWS Glue, EMR, and automated dashboards, standardizing analytics workflows for marketing stakeholders."
-            ],
-            "role": "Staff Data Scientist (Marketing Data Science)",
-            "company": "Realtor.com",
-            "location": "Seattle, USA",
-            "start": "Sept. 2021",
-            "end": "June 2022"
-          },
-          {
-            "bullets": [
-              "Improved route ROI by 8% using XGBoost and Isolation Forest models to forecast pickup times and anticipate operational delays.",
-              "Accelerated contract review cycles by 30% through a T5-based summarization model extracting key legal clauses from long-form service agreements.",
-              "Developed a ResNet-50 waste-classification model achieving 95% accuracy across five material categories, enabling future automation of recycling workflows."
-            ],
-            "role": "Data Science Intern (Routing Optimization)",
-            "company": "Recology",
-            "location": "San Francisco, USA",
-            "start": "Jan. 2021",
-            "end": "Aug. 2021"
-          },
-          {
-            "role": "Senior Data Scientist (Search and Recommendation)",
-            "company": "Flipkart E-commerce",
-            "location": "Bangalore, India",
-            "start": "Aug. 2018",
-            "end": "July 2020",
-            "bullets": [
-              "Increased recommendation coverage by 14% and improved units sold by 10% by leading two DSs in building collaborative filtering models for private-label products.",
-              "Improved launch success metrics by driving experiment design and analysis for five major initiatives and developing an internal A/B experimentation tool that reduced setup time by 30%.",
-              "Reduced anomaly investigation time by 25% by deploying STL-based decomposition models to isolate demand shocks and seasonal patterns across categories."
-            ]
-          },
-          {
-            "role": "Data Scientist (Retail Pricing and Assortment analytics)",
-            "company": "Walmart Labs",
-            "location": "Bangalore, India",
-            "start": "Nov. 2016",
-            "end": "Aug. 2018",
-            "bullets": [
-              "Forecasted volume lift for 6.5M+ products using ARIMAX and VAR models (74% accuracy), enabling pricing and assortment teams to improve planning accuracy by ~12%.",
-              "Accelerated executive decision-making by developing Tableau dashboards to visualize anomalies, forecasts, and root-cause analyses across high-volume product categories."
-            ]
-          },
-          {
-            "role": "Earlier Career",
-            "company": "",
-            "location": "",
-            "start": "",
-            "end": "",
-            "bullets": [
-              "Lead Product Analyst, Ola Cabs (2016) — Increased shuttle-route utilization by 14% by optimizing route structures using linear programming under real-world demand and capacity constraints.",
-              "Business Analyst, ZS Associates (2014–2016) — Built a statistical governance model using linear regression to ensure equitable incentive payouts and reduce compensation disputes by ~10%."
-            ]
-          }
-        ],
-        "education": [
-          {
-            "degree": "Masters in Data Science",
-            "school": "University of San Francisco",
-            "location": "3.8/4 GPA",
-            "start": "Aug. 2020",
-            "end": "Aug. 2021",
-            "details": ""
-          },
-          {
-            "degree": "B.E(Hons.) Electronics",
-            "school": "Birla Institute of Technology and Science",
-            "location": "",
-            "start": "Aug. 2010",
-            "end": "May 2014",
-            "details": ""
-          }
-        ]
-      },
-      "sectionOrder": [
-        "summary",
-        "experience",
-        "education",
-        "skills"
-      ]
-    }
+    "summary": "Statistical Analyst, ZS Associates (2014–2016) — Built a statistical governance model using linear regression to ensure equitable incentive payouts and reduce compensation disputes by ~10%.",
+    "details": "At ZS Associates, I supported incentive design projects by building statistical models that evaluated how well payout formulas aligned with actual performance. Using linear regression and related techniques, I assessed whether certain groups were systematically over- or under-compensated after controlling for relevant performance drivers. I partnered with client stakeholders to interpret the findings and propose adjustments to plan parameters, such as quotas, thresholds, and payout curves. These models served as a governance layer, surfacing potential fairness issues before incentive plans were finalized. Over time, this approach helped clients reduce disputes around compensation by roughly 10% and increased trust in the incentive process. It also strengthened my experience in applied statistics and communication of model results to non-technical audiences."
   },
   {
     "id": "proj-two-tower",
     "title": "Two-Tower Recommender System",
-    "area": "Personal Project",
+    "company": "Personal",
+    "area": "Recommender Systems",
     "tags": [
       "retrieval",
       "recommendations",
       "two-tower",
       "similarity search",
-      "Pytorch"
+      "Pytorch",
+      "embeddings"
     ],
     "summary": "Two-tower retrieval model that learns user and item embeddings separately and ranks candidates via dot-product similarity.",
-    "details": "GitHub: https://github.com/shrutiroyai/two_tower_retrieval. Trained a two-tower architecture to generate user and item vectors for fast candidate generation. Implemented negative sampling, batch inference, and ANN-ready embeddings so the model can plug into downstream ranking or vector-search layers."
+    "details": "As a personal project, I implemented a two-tower recommendation model where one neural network encodes user features and another encodes item features into a shared embedding space. I built the architecture in Pytorch, using mini-batch training with negative sampling to teach the model to distinguish positive interactions from randomly sampled negatives. Once trained, the model produces user and item embeddings that can be used for fast approximate nearest-neighbor search, making it suitable for large-scale candidate generation. I experimented with different pooling strategies and feature sets to improve retrieval quality. The project also included scripts for offline evaluation and for exporting embeddings to a vector database for ANN search. This work demonstrates my familiarity with modern retrieval architectures and end-to-end recommender system design."
   },
   {
     "id": "proj-twiml-buzzer",
     "title": "Automated Entry Buzzer with TwiML",
-    "area": "Personal Project",
+    "company": "Personal",
+    "area": "Automation",
     "tags": [
       "Twilio",
       "TwiML",
       "voice",
       "automation",
       "PHP",
-      "AWS"
+      "AWS",
+      "webhooks"
     ],
     "summary": "Automated apartment entry calls with a Twilio-powered voice flow that validates a passcode and triggers the buzzer.",
-    "details": "GitHub: https://github.com/shrutiroyai/Programing-Voice-using-TwiML. Set up a Twilio number that answers the building entry phone, checks a shared passcode, and automatically buzzes visitors in. Hosted the PHP webhook on AWS with configurable codes to avoid missed early-morning calls."
+    "details": "In this project, I used Twilio and TwiML to automatically handle calls from a building entry system so visitors could be buzzed in without manual intervention. I created a TwiML voice flow that answered incoming calls, prompted visitors to enter a passcode, and validated the digits against a configured secret. When the passcode was correct, the service triggered the DTMF tones required to open the door. The backend was implemented in PHP and hosted on AWS, with configuration stored in environment variables or simple config files. This setup allowed me to control building access even when I was away from my phone or unable to answer calls. The project illustrates my ability to connect telephony APIs, lightweight backend services, and real-world hardware flows into a cohesive automation."
   },
   {
     "id": "proj-marketing-mix",
     "title": "Marketing Mix Modeling & Adstock",
-    "area": "Personal Project",
+    "company": "Personal",
+    "area": "Marketing Attribution",
     "tags": [
       "marketing mix modeling",
       "adstock",
       "attribution",
       "time series",
-      "Python"
+      "Python",
+      "media optimization"
     ],
-    "summary": "Built weekly MMMs with adstock rate estimation for camera accessories, home audio, and gaming accessories.",
-    "details": "GitHub: https://github.com/shrutiroyai/Adstock-Rate-Calculation-and-Marketing-Mix-Modelling. Modeled channel contributions using adstock transformations, saturation, and base vs. incremental demand separation at weekly granularity to guide spend allocation across three product sub-categories."
+    "summary": "Built weekly MMMs with adstock rate estimation for multiple product categories.",
+    "details": "As a self-directed project, I implemented marketing mix models in Python to estimate the contribution of different media channels to sales across several product categories. I modeled the time-delayed impact of media using adstock transformations and experimented with different decay rates to best fit historical data. I also incorporated saturation curves to reflect diminishing returns at high spend levels. The models separated base demand from media-driven incremental lift and produced elasticity estimates that could be used to guide budget reallocations. I wrote analysis notebooks and scripts to visualize response curves and scenario plans. This project deepened my understanding of MMM, adstock, and the practical challenges of attributing impact in aggregated time-series settings."
   }
 ]
