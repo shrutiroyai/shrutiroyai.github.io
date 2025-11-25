@@ -139,10 +139,10 @@ function keywordBonus(item, qTokens) {
 
 function priorityBonus(item) {
   const company = (item.company || "").toLowerCase();
-  if (company.includes("amazon")) return 0.02;
-  if (company.includes("realtor")) return 0.015;
-  if (company.includes("recology")) return 0.01;
-  if (company.includes("flipkart")) return 0.008;
+  if (company.includes("amazon")) return 0.12;
+  if (company.includes("realtor")) return 0.02;
+  if (company.includes("recology")) return 0.015;
+  if (company.includes("flipkart")) return 0.012;
   return 0;
 }
 
