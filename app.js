@@ -42,10 +42,6 @@ function appendMessage(node, sender = "bot") {
   bubble.appendChild(node);
   wrapper.appendChild(bubble);
   messagesEl.appendChild(wrapper);
-  // Smoothly keep the newest message in view
-  requestAnimationFrame(() => {
-    wrapper.scrollIntoView({ behavior: "smooth", block: "end" });
-  });
   return wrapper;
 }
 
