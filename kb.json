@@ -294,20 +294,5 @@
     ],
     "summary": "Built weekly MMMs with adstock rate estimation for camera accessories, home audio, and gaming accessories.",
     "details": "GitHub: https://github.com/shrutiroyai/Adstock-Rate-Calculation-and-Marketing-Mix-Modelling. Modeled channel contributions using adstock transformations, saturation, and base vs. incremental demand separation at weekly granularity to guide spend allocation across three product sub-categories."
-  },
-  {
-    "id": "proj-client-rag",
-    "title": "Client-Side RAG on Resume (FastAPI + HF Transformers)",
-    "area": "Personal Project",
-    "tags": [
-      "RAG",
-      "client-side",
-      "FastAPI",
-      "transformers",
-      "Hugging Face",
-      "resume"
-    ],
-    "summary": "Browser-first RAG that uses Hugging Face transformers and a FastAPI backend to answer questions over my resume.",
-    "details": "GitHub: https://github.com/shrutiroyai/shrutiroyai.github.io. Built a lightweight client-side RAG that embeds resume snippets with HF transformers, serves them via FastAPI, and answers queries without a heavyweight LLM—optimized for low-latency lookups and privacy-friendly browsing."
   }
 ]
